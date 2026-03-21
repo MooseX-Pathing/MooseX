@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.movement.pathing.xpathing;
+package com.xpathing.main.follower.xpathing;
 
 // import com.acmerobotics.dashboard.config.Config;
 import org.firstinspires.ftc.teamcode.movement.geometry.Pose2d;

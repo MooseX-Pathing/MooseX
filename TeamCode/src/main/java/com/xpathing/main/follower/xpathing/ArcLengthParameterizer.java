@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.movement.pathing.xpathing;
+package com.xpathing.main.follower.xpathing;
 
 import org.firstinspires.ftc.teamcode.movement.geometry.Vector2d;
 

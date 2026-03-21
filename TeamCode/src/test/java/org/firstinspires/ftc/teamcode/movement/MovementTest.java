@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.movement;
 import static org.junit.Assert.*;
 import org.junit.Test;
 import org.firstinspires.ftc.teamcode.movement.geometry.Vector2d;
-import org.firstinspires.ftc.teamcode.movement.pathing.xpathing.QuinticHermiteSpline;
+import com.xpathing.main.follower.xpathing.QuinticHermiteSpline;
 import java.util.Arrays;
 
 public class MovementTest {
