@@ -1,8 +1,19 @@
 package com.xpathing.main.localization
 
-import com.xpathing.util.math.Pose
+
+
+
+
+
 import com.xpathing.util.math.Vector
+
 import java.lang.annotation.Inherited
+import com.xpathing.util.math.Pose
+
+/**
+*@author Topher Fontana (@moosecoding)
+*@date 3/19/26 
+*/
 
 @MustBeDocumented
 @Inherited
@@ -16,18 +27,34 @@ annotation class Pathing
 @MustBeDocumented
 annotation class Localizer
 
-abstract class LocalizerBase {
-    protected var lastPosition: Pose = Pose(0.0, 0.0, 0.0)
-    protected var lastVelocity: Vector = Vector(0.0, 0.0)
 
-    var currentPosition: Pose = Pose(0.0, 0.0, 0.0)
-    var currentVelocity: Vector = Vector(0.0, 0.0)
-    var currentAcceleration: Vector = Vector(0.0, 0.0)
 
+abstract class LocalizerBase() {
+    // Add the @Pathing annotation stuff here
+
+    // Stores the last position so that way we can calculate velocity
+    var lastPosition: Pose = Pose(0.0,0.0,0.0)
+    // Stores the last velocity so that way we can calculate acceleration
+    private var lastVelocity: Vector = Vector(0.0,0.0)
+    var currentPosition: Pose = Pose(0.0,0.0,0.0)
+    var currentVelocity: Vector = Vector(0.0,0.0)
+    var currentAcceleration: Vector = Vector(0.0,0.0)
+
+    /**
+     * This initializes the localizer's hardware map or whatever else needed
+     */
     abstract fun initLocalizer(deviceName : String)
-    abstract fun update()
-    abstract fun setPose(pose: Pose)
 
+
+    /**
+    * This is the update class called when your localizer is attached using the @Pathing annotation
+    */
+    abstract fun update()
+
+    /**
+    *@param A [Pose] to set the location of the localizer to
+    */
+    abstract fun setPose(pose: Pose)
     protected fun updateKinematics() {
         currentVelocity = Vector(
             currentPosition.x - lastPosition.x,
@@ -37,4 +64,5 @@ abstract class LocalizerBase {
         lastVelocity = currentVelocity.copy()
         lastPosition = currentPosition.copyPose()
     }
-}
+} 
+
