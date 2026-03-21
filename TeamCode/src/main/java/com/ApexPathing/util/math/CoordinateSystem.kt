@@ -1,4 +1,4 @@
-package com.xpathing.util.math
+package com.ApexPathing.util.math
 
 import kotlin.math.PI
 

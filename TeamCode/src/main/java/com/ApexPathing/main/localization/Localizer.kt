@@ -1,14 +1,14 @@
-package com.xpathing.main.localization
+package com.ApexPathing.main.localization
 
 
 
 
 
 
-import com.xpathing.util.math.Vector
+import com.ApexPathing.util.math.Vector
 
 import java.lang.annotation.Inherited
-import com.xpathing.util.math.Pose
+import com.ApexPathing.util.math.Pose
 
 /**
 *@author Topher Fontana (@moosecoding)

@@ -1,5 +1,5 @@
 
-package com.xpathing.main.localization
+package com.ApexPathing.main.localization
 
 import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver
 import com.qualcomm.robotcore.hardware.HardwareMap
@@ -7,8 +7,8 @@ import com.qualcomm.robotcore.hardware.HardwareMap
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit
 import org.firstinspires.ftc.robotcore.external.navigation.Pose2D
-import com.xpathing.util.math.Pose;
-import com.xpathing.util.math.Vector
+import com.ApexPathing.util.math.Pose;
+import com.ApexPathing.util.math.Vector
 
 @Localizer
 object PinpointLocalizer : LocalizerBase() {
