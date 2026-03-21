@@ -1,8 +1,8 @@
-package com.xpathing.drivetrains;
+package com.ApexPathing.drivetrains;
 
 import org.firstinspires.ftc.teamcode.movement.geometry.Pose2d;
 import org.firstinspires.ftc.teamcode.movement.localization.Localizer;
-import com.xpathing.main.follower.xpathing.HolonomicTrajectoryFollower;
+import com.ApexPathing.main.follower.xpathing.HolonomicTrajectoryFollower;
 
 /**
  * CustomDrive abstract class following the common library structure.

@@ -1,4 +1,4 @@
-package com.xpathing.main.follower.xpathing;
+package com.ApexPathing.main.follower.xpathing;
 
 import org.firstinspires.ftc.teamcode.movement.geometry.Pose2d;
 

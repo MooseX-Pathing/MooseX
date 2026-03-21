@@ -1,4 +1,4 @@
-package com.xpathing.drivetrains;
+package com.ApexPathing.drivetrains;
 
 import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -12,7 +12,7 @@ import org.firstinspires.ftc.teamcode.movement.kinematics.ChassisSpeeds;
 import org.firstinspires.ftc.teamcode.movement.kinematics.SwerveKinematics;
 import org.firstinspires.ftc.teamcode.movement.kinematics.SwerveModuleState;
 import org.firstinspires.ftc.teamcode.movement.localization.Localizer;
-import com.xpathing.main.follower.xpathing.HolonomicTrajectoryFollower;
+import com.ApexPathing.main.follower.xpathing.HolonomicTrajectoryFollower;
 
 import java.util.ArrayList;
 import java.util.List;

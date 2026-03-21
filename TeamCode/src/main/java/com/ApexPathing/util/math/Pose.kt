@@ -1,7 +1,8 @@
-package com.xpathing.util.math
+package com.ApexPathing.util.math
 
 
 import kotlin.math.PI
+import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.sin
 import kotlin.math.sqrt
@@ -197,6 +198,16 @@ data class Pose(
 
         override fun fromApexCoordinates(pose: Pose): Pose {
             TODO("Not yet implemented")
+        }
+
+    }
+    companion object {
+
+        @JvmStatic
+        fun cartesianToPolar(x: Double, y: Double): DoubleArray {
+            val r = sqrt(x * x + y * y)
+            val theta = atan2(y, x)
+            return doubleArrayOf(r, theta)
         }
 
     }
