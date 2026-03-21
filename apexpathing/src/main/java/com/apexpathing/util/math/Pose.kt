@@ -285,3 +285,9 @@ data class Pose(
      */
     fun debug(): String = "Pose { x: $x, y: $y, heading: $heading } in ${coordSystem.toString()}"
 }
+
+/**
+ * NOTE TO DEVS:
+ *
+ * At some point, extract the normalize function to a separate object that contains a bunch of Math Functions
+ */
