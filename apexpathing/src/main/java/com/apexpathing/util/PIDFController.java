@@ -37,6 +37,8 @@ public class PIDFController {
         double timestamp = timer.milliseconds() / 1000;
         double deltaTime = timestamp - lastTimestamp;
 
+        if (deltaTime == 0) return 0;
+
         error = goal - currentPosition;
 
         double kPOut = kP * error;

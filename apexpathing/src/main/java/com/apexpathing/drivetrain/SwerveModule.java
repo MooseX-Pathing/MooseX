@@ -79,9 +79,6 @@ public class SwerveModule {
         return delta;
     }
 
-    public void update() {
-    }
-
     public double getLastPower() { return lastPower; }
     public double getLastPosition() { return lastPosition; }
 }

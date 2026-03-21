@@ -58,9 +58,6 @@ public class SwerveDrive extends CustomDrive {
         localizer.update();
         currentPose = localizer.getPose();
 
-        for (SwerveModule module : modules) {
-            module.update();
-        }
     }
 
     public List<Double> getModulePositions() {

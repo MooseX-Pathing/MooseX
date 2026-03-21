@@ -28,6 +28,5 @@ public abstract class CustomDrive {
      * @param traj The trajectory to follow.
      */
     public void followTrajectory(Trajectory traj) {
-        // controller.startFollowing(traj);
     }
 }
