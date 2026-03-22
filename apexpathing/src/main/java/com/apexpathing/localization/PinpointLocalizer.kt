@@ -10,6 +10,7 @@ import com.apexpathing.geometry.Pose2d
 
 /**
  * GoBilda Pinpoint odometry localizer.
+ * @Author Sohum Arora 22985
  */
 class PinpointLocalizer(
     private val hardwareMap: HardwareMap,
