@@ -1,6 +1,6 @@
 package com.apexpathing.follower;
 
-import com.apexpathing.geometry.Vector2d;
+import com.apexpathing.util.math.Vector;
 
 /**
  * A quintic Hermite spline solver and evaluator.
@@ -15,11 +15,11 @@ public class QuinticHermiteSpline {
      * The spline is parameterized from t=0 to t=1.
      */
     public QuinticHermiteSpline(
-            Vector2d startPos, Vector2d startVel, Vector2d startAccel,
-            Vector2d endPos, Vector2d endVel, Vector2d endAccel
+            Vector startPos, Vector startVel, Vector startAccel,
+            Vector endPos, Vector endVel, Vector endAccel
     ) {
-        this.xCoeffs = solve(startPos.x, startVel.x, startAccel.x, endPos.x, endVel.x, endAccel.x);
-        this.yCoeffs = solve(startPos.y, startVel.y, startAccel.y, endPos.y, endVel.y, endAccel.y);
+        this.xCoeffs = solve(startPos.x(), startVel.x(), startAccel.x(), endPos.x(), endVel.x(), endAccel.x());
+        this.yCoeffs = solve(startPos.y(), startVel.y(), startAccel.y(), endPos.y(), endVel.y(), endAccel.y());
     }
 
     /**
@@ -42,16 +42,16 @@ public class QuinticHermiteSpline {
         return new double[]{a, b, c, d, e, f};
     }
 
-    public Vector2d getPoint(double t) {
-        return new Vector2d(evaluate(xCoeffs, t), evaluate(yCoeffs, t));
+    public Vector getPoint(double t) {
+        return new Vector(evaluate(xCoeffs, t), evaluate(yCoeffs, t));
     }
 
-    public Vector2d getVelocity(double t) {
-        return new Vector2d(evaluateDerivative(xCoeffs, t), evaluateDerivative(yCoeffs, t));
+    public Vector getVelocity(double t) {
+        return new Vector(evaluateDerivative(xCoeffs, t), evaluateDerivative(yCoeffs, t));
     }
 
-    public Vector2d getAcceleration(double t) {
-        return new Vector2d(evaluateSecondDerivative(xCoeffs, t), evaluateSecondDerivative(yCoeffs, t));
+    public Vector getAcceleration(double t) {
+        return new Vector(evaluateSecondDerivative(xCoeffs, t), evaluateSecondDerivative(yCoeffs, t));
     }
 
     private double evaluate(double[] coeffs, double t) {

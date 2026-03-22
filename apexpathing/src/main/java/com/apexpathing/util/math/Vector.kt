@@ -121,6 +121,15 @@ data class Vector
         Pose(x, y)
 
     /**
+     * Normalizes the vector to have a magnitude of 1.
+     * @return The normalized vector.
+     */
+    fun normalize(): Vector {
+        val mag = magnitude
+        return if (mag > 1e-9) this / mag else Vector(0.0, 0.0)
+    }
+
+    /**
      * Function to add two vectors
      *
      * @param otherVec the vector to add to this vector

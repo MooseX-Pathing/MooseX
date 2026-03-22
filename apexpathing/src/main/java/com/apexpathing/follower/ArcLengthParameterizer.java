@@ -1,6 +1,6 @@
 package com.apexpathing.follower;
 
-import com.apexpathing.geometry.Vector2d;
+import com.apexpathing.util.math.Vector;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,12 +22,12 @@ public class ArcLengthParameterizer {
         this.arcLengths.add(0.0);
 
         double accumulatedLength = 0.0;
-        Vector2d prevPoint = spline.getPoint(0);
+        Vector prevPoint = spline.getPoint(0);
 
         for (int i = 1; i <= SAMPLES; i++) {
             double t = (double) i / SAMPLES;
-            Vector2d currentPoint = spline.getPoint(t);
-            accumulatedLength += prevPoint.distanceTo(currentPoint);
+            Vector currentPoint = spline.getPoint(t);
+            accumulatedLength += prevPoint.asPose().distanceTo(currentPoint.asPose());
             arcLengths.add(accumulatedLength);
             prevPoint = currentPoint;
         }

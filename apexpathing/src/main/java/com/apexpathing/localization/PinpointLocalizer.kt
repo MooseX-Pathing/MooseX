@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit
 import org.firstinspires.ftc.robotcore.external.navigation.Pose2D
-import com.apexpathing.geometry.Pose2d
+import com.apexpathing.util.math.Pose
 
 /**
  * GoBilda Pinpoint odometry localizer
@@ -17,12 +17,9 @@ class PinpointLocalizer(
     private val deviceName: String,
     var xOffset: Double = 0.0,
     var yOffset: Double = 0.0
-) : Localizer {
+) : LocalizerBase() {
 
     private lateinit var pinpoint: GoBildaPinpointDriver
-    private var currentPose = Pose2d(0.0, 0.0, 0.0)
-    private var lastPose = Pose2d(0.0, 0.0, 0.0)
-    private var currentVelocity = Pose2d(0.0, 0.0, 0.0)
 
     fun init() {
         pinpoint = hardwareMap.get(GoBildaPinpointDriver::class.java, deviceName)
@@ -39,27 +36,24 @@ class PinpointLocalizer(
         pinpoint.update()
         val pos = pinpoint.position
 
-        lastPose = currentPose
-        currentPose = Pose2d(
+        lastPosition = currentPosition
+        currentPosition = Pose(
             pos.getX(DistanceUnit.INCH),
             pos.getY(DistanceUnit.INCH),
             pinpoint.getHeading(AngleUnit.RADIANS)
         )
 
-        currentVelocity = Pose2d(
-            currentPose.x - lastPose.x,
-            currentPose.y - lastPose.y,
-            currentPose.heading - lastPose.heading
-        )
+        currentVelocity.x = (currentPosition.x - lastPosition.x)
+        currentVelocity.y = (currentPosition.y - lastPosition.y)
     }
 
-    override fun getPose(): Pose2d = currentPose
+    override fun getPose(): Pose = currentPosition
 
-    override fun getVelocity(): Pose2d = currentVelocity
+    override fun getVelocity(): Pose = Pose(currentVelocity.x, currentVelocity.y, 0.0)
 
-    override fun setPose(pose: Pose2d) {
-        currentPose = pose
-        lastPose = pose
+    override fun setPose(pose: Pose) {
+        currentPosition = pose
+        lastPosition = pose
         pinpoint.setPosition(
             Pose2D(
                 DistanceUnit.INCH,
@@ -69,5 +63,9 @@ class PinpointLocalizer(
                 pose.heading
             )
         )
+    }
+
+    override fun initLocalizer(hardwareMap: HardwareMap) {
+        init()
     }
 }
