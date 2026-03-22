@@ -14,6 +14,7 @@ public class PIDFController {
     private double error;
     private double lastTimestamp = 0;
     private final ElapsedTime timer;
+    private double motorDeadzone = 0.05;
 
     public PIDFController(double kP, double kI, double kD, double kF) {
         this.kP = kP;
@@ -57,6 +58,10 @@ public class PIDFController {
         lastTimestamp = timestamp;
         lastError = error;
 
-        return kPOut + kIOut + kDOut + kFOut;
+        double power = kPOut + kIOut + kDOut + kFOut;
+        if(Math.abs(power) < motorDeadzone){
+            power = 0;
+        }
+        return Math.max(-1.0, Math.min(1.0, power));
     }
 }
