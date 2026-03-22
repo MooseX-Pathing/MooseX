@@ -2,7 +2,6 @@
 
 package com.apexpathing.util.math
 
-import com.apexpathing.geometry.Vector
 import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.sin
@@ -14,19 +13,19 @@ import kotlin.math.sqrt
  * Provides methods for arithmetic functions with positions, flexible coordinate systems
  * Methods include:
  *   Utility Functions:
- *    - distanceTo
- *    - distanceFrom
- *    - distanceSquaredFrom
- *    - asVector
- *    - inCoordinateSystem
+ *    - [distanceTo]
+ *    - [distanceFrom]
+ *    - [distanceSquaredFrom]
+ *    - [asVector]
+ *    - [inCoordinateSystem]
  *
  *   Transformation functions:
- *    - reflectX
- *    - withReflectedX
- *    - reflectY
- *    - withReflectedY
- *    - rotate
- *    - rotated
+ *    - [reflectX]
+ *    - [withReflectedX]
+ *    - [reflectY]
+ *    - [withReflectedY]
+ *    - [rotate]
+ *    - [rotated]
  *
  * @author Achintya Akula - 30099 OmicronX
  * @author Sohum Arora
@@ -271,14 +270,6 @@ data class Pose
             coordSystem
         )
 
-
-    fun normalize(angle: Double): Double {
-        var a = angle % (2 * PI)
-        if (a > PI) a -= 2 * PI
-        if (a <= -PI) a += 2 * PI
-        return a
-    }
-
     /**
      * Function to convert the position to a string for easy viewing
      *
@@ -289,6 +280,7 @@ data class Pose
 
     /**
      * Debug Function to convert the position into a string that the user can use for debugging
+     * Provides more info than [toString]
      *
      * @return The string with x-y, heading, and coordSys information
      */
@@ -300,3 +292,9 @@ data class Pose
  *
  * At some point, extract the normalize function to a separate object that contains a bunch of Math Functions
  */
+fun normalize(angle: Double): Double {
+    var a = angle % (2 * PI)
+    if (a > PI) a -= 2 * PI
+    if (a <= -PI) a += 2 * PI
+    return a
+}

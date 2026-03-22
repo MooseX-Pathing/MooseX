@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigurationType;
-import com.apexpathing.geometry.Vector;
+import com.apexpathing.util.math.Vector;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.jetbrains.annotations.NotNull;
@@ -15,9 +15,9 @@ import java.util.List;
 
 /**
  * A class that defines the Mecanum Drivetrain: a child class of the Drivetrain
+ * @author Sohum Arora 22985
  * @author Krish 26192
  * @author Xander Haemel- 31616
- *
  */
 public class MecanumDrive extends Drivetrain {
 
