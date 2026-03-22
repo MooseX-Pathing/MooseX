@@ -9,6 +9,7 @@ import kotlin.math.sin
 /**
  * Mutable 2D vector with polar coordinate support.
  * Used by MecanumDrive for drive power calculations.
+ * @author Sohum Arora 22985 Paraducks
  */
 data class Vector(
     var x: Double,
