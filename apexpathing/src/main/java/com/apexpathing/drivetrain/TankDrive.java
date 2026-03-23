@@ -53,12 +53,13 @@ public class TankDrive extends Drivetrain {
     }
 
     /**
-     * @param args, an array of doubles that correspond to [0] == y, [1] == turn
+     * @param args, an array of doubles that correspond to [1] == y, [2] == turn
      */
     @Override
     public void drive(double ...args) {
-        double y = args[0];
-        double turn = args[1];
+        double x = args[0]; // Ignore this argument
+        double y = args[1];
+        double turn = args[2];
 
         double left = y + turn;
         double right = y - turn;

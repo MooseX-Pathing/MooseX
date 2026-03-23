@@ -17,4 +17,11 @@ public interface Trajectory {
      * @return The duration in seconds.
      */
     double duration();
+
+    /**
+     * Samples the trajectory parametrically by distance.
+     * @param t a Double between 0,1 along the trajectory.
+     * @return The trajectory sample at the given distance.
+     */
+    TrajectorySample parametricSample(Double t);
 }

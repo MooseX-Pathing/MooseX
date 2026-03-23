@@ -6,9 +6,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * PIDF feedback controller.
  * @author Xander Haemel -31616
  */
-public class PIDFController {
+public class PIDFController extends Controller {
     public double kP, kI, kD, kF;
-    public double goal = 0;
     private double integralSum = 0;
     private double derivative;
     private double lastError = 0;
@@ -26,22 +25,19 @@ public class PIDFController {
         timer.startTime();
     }
 
-    public void setGoal(double newGoal) {
-        this.goal = newGoal;
-    }
-
     /**
      * Calculates the PIDF output.
      * @param currentPosition the current position of the mechanism
      * @return the power output
      */
+    @Override
     public synchronized double calculate(double currentPosition) {
         double timestamp = timer.milliseconds() / 1000;
         double deltaTime = timestamp - lastTimestamp;
 
         if (deltaTime == 0) return 0;
 
-        error = goal - currentPosition;
+        error = this.getGoal() - currentPosition;
 
         double kPOut = kP * error;
 

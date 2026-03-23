@@ -40,7 +40,8 @@ public class TimeTrajectory implements Trajectory {
             Vector p = splines[0].getPoint(0);
             Vector v = splines[0].getVelocity(0).div(segmentDurations[0]);
             Vector a = splines[0].getAcceleration(0).div(segmentDurations[0] * segmentDurations[0]);
-            return new TrajectorySample(new Pose(p.x(), p.y(), headings[0]), new Pose(v.x(), v.y(), 0), new Pose(a.x(), a.y(), 0));
+            double vtheta = normalizeAngle(headings[1] - headings[0]) / segmentDurations[0];
+            return new TrajectorySample(new Pose(p.x(), p.y(), headings[0]), new Pose(v.x(), v.y(), vtheta), new Pose(a.x(), a.y(), 0));
         }
 
         if (time >= duration) {
@@ -48,12 +49,13 @@ public class TimeTrajectory implements Trajectory {
             Vector p = splines[lastIdx].getPoint(1);
             Vector v = splines[lastIdx].getVelocity(1).div(segmentDurations[lastIdx]);
             Vector a = splines[lastIdx].getAcceleration(1).div(segmentDurations[lastIdx] * segmentDurations[lastIdx]);
-            return new TrajectorySample(new Pose(p.x(), p.y(), headings[headings.length - 1]), new Pose(v.x(), v.y(), 0), new Pose(a.x(), a.y(), 0));
+            double vtheta = normalizeAngle(headings[headings.length - 1] - headings[headings.length - 2]) / segmentDurations[lastIdx];
+            return new TrajectorySample(new Pose(p.x(), p.y(), headings[headings.length - 1]), new Pose(v.x(), v.y(), vtheta), new Pose(a.x(), a.y(), 0));
         }
 
-        int segmentIdx = 0;
-        for (int i = 0; i < splines.length; i++) {
-            if (time < segmentStartTimes[i] + segmentDurations[i]) {
+        int segmentIdx = splines.length - 1;
+        for (int i = 0; i < splines.length - 1; i++) {
+            if (time < segmentStartTimes[i + 1]) {
                 segmentIdx = i;
                 break;
             }
@@ -73,6 +75,11 @@ public class TimeTrajectory implements Trajectory {
         double vtheta = normalizeAngle(endHeading - startHeading) / segmentDurations[segmentIdx];
 
         return new TrajectorySample(new Pose(p.x(), p.y(), heading), new Pose(v.x(), v.y(), vtheta), new Pose(a.x(), a.y(), 0));
+    }
+
+    @Override
+    public TrajectorySample parametricSample(Double t) {
+        return sample((Math.max(0.0, Math.min(1.0, t))) * duration);
     }
 
     @Override

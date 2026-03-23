@@ -18,6 +18,7 @@ import kotlin.math.sqrt
  *    - [distanceSquaredFrom]
  *    - [asVector]
  *    - [inCoordinateSystem]
+ *    - [nearPose]
  *
  *   Transformation functions:
  *    - [reflectX]
@@ -293,6 +294,12 @@ data class Pose
      */
     fun copy(): Pose =
         Pose(x, y, heading, coordSystem)
+
+    /**
+     * Function to see if a pose is close to another pose
+     */
+    fun nearPose(otherPose: Pose, threshold: Double = 0.01): Boolean =
+        distanceFrom(otherPose) < threshold
 }
 
 /**
