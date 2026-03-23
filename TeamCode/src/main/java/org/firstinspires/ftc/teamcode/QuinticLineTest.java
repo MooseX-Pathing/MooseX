@@ -1,12 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.apexpathing.drivetrain.MecanumConstants;
-import com.apexpathing.drivetrain.MecanumDrive;
-import com.apexpathing.follower.QuinticHermiteSpline;
-import com.apexpathing.follower.TimeTrajectory;
-import com.apexpathing.localization.PinpointLocalizer;
-import com.apexpathing.util.math.Pose;
-import com.apexpathing.util.math.Vector;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
@@ -15,6 +8,7 @@ public class QuinticLineTest extends LinearOpMode {
 
     @Override
     public void runOpMode() {
+        /*
         // 1. Initialize Localizer
         PinpointLocalizer localizer = new PinpointLocalizer(hardwareMap, "pp", 0, 0);
         localizer.init();

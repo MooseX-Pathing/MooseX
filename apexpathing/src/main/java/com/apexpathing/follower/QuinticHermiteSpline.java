@@ -1,5 +1,7 @@
 package com.apexpathing.follower;
 
+import com.apexpathing.util.math.Pose;
+import com.apexpathing.util.math.PoseKt;
 import com.apexpathing.util.math.Vector;
 
 /**
@@ -7,26 +9,22 @@ import com.apexpathing.util.math.Vector;
  * Solves for 5th-degree polynomial coefficients given start/end poses, velocities, and accelerations.
   * @author Krish Joshi - 26192 Heatwaves
  */
-public class QuinticHermiteSpline {
+public class QuinticHermiteSpline implements Trajectory {
     private final double[] xCoeffs;
     private final double[] yCoeffs;
+    private final double startHeading;
+    private final double endHeading;
 
-    /**
-     * Solves for 5th-degree polynomial coefficients.
-     * The spline is parameterized from t=0 to t=1.
-     */
     public QuinticHermiteSpline(
-            Vector startPos, Vector startVel, Vector startAccel,
-            Vector endPos, Vector endVel, Vector endAccel
+            Pose start, Vector startVel, Vector startAccel,
+            Pose end, Vector endVel, Vector endAccel
     ) {
-        this.xCoeffs = solve(startPos.x(), startVel.x(), startAccel.x(), endPos.x(), endVel.x(), endAccel.x());
-        this.yCoeffs = solve(startPos.y(), startVel.y(), startAccel.y(), endPos.y(), endVel.y(), endAccel.y());
+        this.xCoeffs = solve(start.x(), startVel.x(), startAccel.x(), end.x(), endVel.x(), endAccel.x());
+        this.yCoeffs = solve(start.y(), startVel.y(), startAccel.y(), end.y(), endVel.y(), endAccel.y());
+        this.startHeading = start.heading();
+        this.endHeading = end.heading();
     }
 
-    /**
-     * Solves for coefficients a, b, c, d, e, f of f(t) = at^5 + bt^4 + ct^3 + dt^2 + et + f
-     * given f(0), f'(0), f''(0), f(1), f'(1), f''(1).
-     */
     private double[] solve(double p0, double v0, double a0, double p1, double v1, double a1) {
         double f = p0;
         double e = v0;
@@ -65,5 +63,36 @@ public class QuinticHermiteSpline {
 
     private double evaluateSecondDerivative(double[] coeffs, double t) {
         return ((20 * coeffs[0] * t + 12 * coeffs[1]) * t + 6 * coeffs[2]) * t + 2 * coeffs[3];
+    }
+
+    @Override
+    public TrajectorySample sample(double t) {
+        double interpolation = Math.max(0.0, Math.min(1.0, t));
+
+        Vector p = getPoint(interpolation);
+        Vector v = getVelocity(interpolation);
+        Vector a = getAcceleration(interpolation);
+
+        double heading = startHeading + PoseKt.normalize(endHeading - startHeading) * interpolation;
+        double vtheta = PoseKt.normalize(endHeading - startHeading);
+
+        return new TrajectorySample(
+                new Pose(p.x(), p.y(), PoseKt.normalize(heading)),
+                new Pose(v.x(), v.y(), vtheta),
+                new Pose(a.x(), a.y(), 0.0)
+        );
+    }
+
+    @Override
+    public double length() {
+        // Numerical integration for arc length
+        int n = 100;
+        double length = 0;
+        double dt = 1.0 / n;
+        for (int i = 0; i < n; i++) {
+            double t = (i + 0.5) * dt;
+            length += getVelocity(t).magnitude() * dt;
+        }
+        return length;
     }
 }
