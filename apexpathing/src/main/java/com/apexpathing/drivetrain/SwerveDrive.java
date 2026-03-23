@@ -22,7 +22,7 @@ import java.util.List;
  * SwerveDrive implementation following the 5-part structure.
   * @author Krish Joshi - 26192 Heatwaves
  */
-public class SwerveDrive extends CustomDrive {
+public class SwerveDrive extends Drivetrain {
     private final SwerveModule[] modules = new SwerveModule[4];
     private final SwerveKinematics kinematics;
     private boolean locked = false;

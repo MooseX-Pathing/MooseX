@@ -79,4 +79,11 @@ public class Units {
     public static double toRadians(double value) {
         return Math.toRadians(value);
     }
+
+    public static double normalizeAngle(double value) {
+        double a = value % (2 * Math.PI);
+        if (a > Math.PI) a -= 2 * Math.PI;
+        if (a <= -Math.PI) a += 2 * Math.PI;
+        return a;
+    }
 }

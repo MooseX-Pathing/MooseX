@@ -4,29 +4,28 @@ import com.apexpathing.util.math.Pose
 
 class Path(private val trajectories: List<Trajectory>, private val threshold: Double) : Trajectory {
     fun isFinished(currentPose: Pose): Boolean {
-        return currentPose.nearPose(this.trajectories.last().parametricSample(1.0).pose, threshold)
+        if (trajectories.isEmpty()) return true
+        return currentPose.nearPose(this.trajectories.last().sample(1.0).pose, threshold)
     }
-
-    private val endTimes: DoubleArray = run {
-        var acc = 0.0
-        DoubleArray(trajectories.size) { i -> acc += trajectories[i].duration(); acc }
-    }
-    override fun duration(): Double = endTimes.last()
-
-    override fun sample(time: Double): TrajectorySample {
-        val clamped = time.coerceIn(0.0, duration())
-
-        var lo = 0; var hi = trajectories.lastIndex
-        while (lo < hi) {
-            val mid = (lo + hi) / 2
-            if (endTimes[mid] < clamped) lo = mid + 1 else hi = mid
+    
+    override fun sample(t: Double): TrajectorySample {
+        if (trajectories.isEmpty()) {
+            return TrajectorySample(Pose(), Pose(), Pose())
         }
 
-        val segStart = if (lo == 0) 0.0 else endTimes[lo - 1]
-        return trajectories[lo].sample(clamped - segStart)
-    }
+        val clampedT = t.coerceIn(0.0, 1.0)
+        val scaledT = clampedT * trajectories.size
+        var index = scaledT.toInt()
 
-    override fun parametricSample(t: Double): TrajectorySample {
-        return sample(t.coerceIn(0.0, 1.0) * duration())
+        if (index >= trajectories.size) {
+            index = trajectories.size - 1
+        }
+
+        var localT = scaledT - index
+        if (index == trajectories.size - 1 && clampedT >= 1.0) {
+            localT = 1.0
+        }
+
+        return trajectories[index].sample(localT)
     }
 }

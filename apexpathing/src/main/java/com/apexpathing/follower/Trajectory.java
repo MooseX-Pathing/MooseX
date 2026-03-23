@@ -6,22 +6,22 @@ package com.apexpathing.follower;
  */
 public interface Trajectory {
     /**
-     * Samples the trajectory at a given time.
-     * @param time The time in seconds.
-     * @return The trajectory sample at the given time.
+     * Samples the trajectory at a given parametric time.
+     * @param t that varies from [0, 1].
+     * @return The trajectory sample at the given parametric time.
      */
-    TrajectorySample sample(double time);
+    TrajectorySample sample(double t);
 
     /**
-     * Gets the total duration of the trajectory.
-     * @return The duration in seconds.
+     * @return Arc length of trajectory
      */
-    double duration();
+    double length();
 
     /**
-     * Samples the trajectory parametrically by distance.
-     * @param t a Double between 0,1 along the trajectory.
-     * @return The trajectory sample at the given distance.
+     * @param s Distance along the arc [0,length]
+     * @return A {@link TrajectorySample} at the given arc length
      */
-    TrajectorySample parametricSample(Double t);
+    default TrajectorySample duration(double s) {
+        return sample(s/length());
+    }
 }
