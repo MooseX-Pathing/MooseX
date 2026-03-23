@@ -9,7 +9,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * @author Krish Joshi - 26192 Heatwaves
+ * @author Sohum Arora 22985 Paraducks
  */
 public class TankDrive extends Drivetrain {
 

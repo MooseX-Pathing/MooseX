@@ -4,6 +4,7 @@ import com.apexpathing.util.math.Pose;
 
 /**
  * FTC field coordinate constants and utilities.
+ * @author Sohum Arora 22985 Paraducks
  */
 public class FieldCoordinates {
     public static final double FIELD_SIZE = 144.0;
