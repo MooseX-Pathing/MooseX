@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.apexPathing.tests;
 
 import com.apexpathing.drivetrain.MecanumConstants;
 import com.apexpathing.drivetrain.MecanumDrive;
@@ -10,8 +10,8 @@ import com.apexpathing.util.math.Vector;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-@Autonomous(name="Quintic Curve Test", group="Drive")
-public class QuinticCurveTest extends LinearOpMode {
+@Autonomous(name="Quintic Test - Straight Line", group="Drive")
+public class QuinticLineTest extends LinearOpMode {
 
     @Override
     public void runOpMode() {
@@ -23,48 +23,35 @@ public class QuinticCurveTest extends LinearOpMode {
         MecanumConstants constants = new MecanumConstants();
         MecanumDrive drive = new MecanumDrive(
                 hardwareMap,
-                localizer,
-                constants,
-                "fl", "fr", "bl", "br"
+                constants
         );
 
         // 3. Define Trajectory
-        double totalTime = 3.0;
-        double midTime = totalTime / 2.0;
-
-        // Points: Start(0,0) -> Mid(24, 0) -> End(24, 24)
-        Vector pStart = new Vector(0, 0);
-        Vector pMid = new Vector(24, 0);
-        Vector pEnd = new Vector(24, 24);
-
-        // Mid-point velocity/tangent
-        Vector vMid = new Vector(20, 20);
-
-        // Segment 1: Start to Mid
-        QuinticHermiteSpline seg1 = new QuinticHermiteSpline(
-                pStart, new Vector(0, 0), new Vector(0, 0),
-                pMid, vMid, new Vector(0, 0)
-        );
-
-        // Segment 2: Mid to End
-        QuinticHermiteSpline seg2 = new QuinticHermiteSpline(
-                pMid, vMid, new Vector(0, 0),
-                pEnd, new Vector(0, 0), new Vector(0, 0)
+        double T = 1.8;
+        // X-Path: Start 0, End 24. End velocity/accel 0.
+        // Y-Path: Start 0, End 24. End velocity/accel 0.
+        // Note: QuinticHermiteSpline is t from 0 to 1.
+        // To simulate virtual tangents like original code, we can adjust end velocities.
+        // In the original, xPath had start velocity 30.
+        QuinticHermiteSpline spline = new QuinticHermiteSpline(
+                new Vector(0, 0), new Vector(30, 0), new Vector(0, 0),
+                new Vector(24, 24), new Vector(0, 30), new Vector(0, 0)
         );
 
         TimeTrajectory trajectory = new TimeTrajectory(
-                new QuinticHermiteSpline[]{seg1, seg2},
-                new double[]{midTime, midTime},
-                new double[]{0, Math.PI/4, Math.PI/2} // 0 deg, 45 deg, 90 deg
+                new QuinticHermiteSpline[]{spline},
+                new double[]{T},
+                new double[]{0, Math.PI/4} // Start heading 0, end heading 45 deg
         );
 
-        telemetry.addLine("The bot will follow a curved path from (0,0) -> (24,0) -> (24,24)");
+        telemetry.addLine("The bot will move from (0,0) to (24, 24)");
         telemetry.update();
 
         waitForStart();
 
         if (isStopRequested()) return;
 
+        /*
         drive.followTrajectory(trajectory);
 
         while (opModeIsActive() && drive.isBusy()) {
@@ -78,5 +65,7 @@ public class QuinticCurveTest extends LinearOpMode {
         }
 
         drive.setDrivePowers(new Pose(0, 0, 0));
+
+         */
     }
 }

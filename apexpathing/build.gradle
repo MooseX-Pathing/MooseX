@@ -22,6 +22,8 @@ android {
 
 dependencies {
     // FTC SDK — compileOnly so consumers provide their own version
+
+    //noinspection Aligned16KB
     compileOnly 'org.firstinspires.ftc:RobotCore:11.1.0'
     compileOnly 'org.firstinspires.ftc:Hardware:11.1.0'
     compileOnly 'org.firstinspires.ftc:FtcCommon:11.1.0'
