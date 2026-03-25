@@ -17,6 +17,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  *   3. Read PEAK_TICKS_PER_SEC from telemetry/dashboard.
  *   4. Plug into your DriveConstants as MAX_TICKS_PER_SEC (lateral).
  * @author Sohum Arora 22985 Paraducks
+ * @author Simon Gidrewicz 31663 RSR Cuttlefish
  */
 @TeleOp(name = "Lateral Velocity Tuner", group = "ApexPathing Tuning")
 public class LateralVelocityTuner extends LinearOpMode {
@@ -25,6 +26,8 @@ public class LateralVelocityTuner extends LinearOpMode {
     public static double duration = 3;
     public static boolean STRAFE_RIGHT  = true;
     private Drivetrain drivetrain;
+    private boolean running = false;
+
 
     @Override
     public void runOpMode() {
@@ -32,8 +35,8 @@ public class LateralVelocityTuner extends LinearOpMode {
         //todo initialize drivetrain here
 
         telemetry.addLine("Lateral Velocity Tuner Ready");
-        telemetry.addLine("ONLY valid for Mecanum / Swerve.");
-        telemetry.addLine("Press A to start strafe burst.");
+        telemetry.addLine("ONLY valid for Mecanum / Swerve");
+        telemetry.addLine("Press A to start");
         telemetry.update();
 
         waitForStart();
@@ -42,8 +45,10 @@ public class LateralVelocityTuner extends LinearOpMode {
         double strafeDir = STRAFE_RIGHT ? 1.0 : -1.0;
 
         while (opModeIsActive()) {
-
-            if (gamepad1.a) {
+            if (gamepad1.aWasPressed()) {
+                running = !running;
+            }
+            if (running) {
                 strafeDir = STRAFE_RIGHT ? 1.0 : -1.0;
                 ElapsedTime timer = new ElapsedTime();
                 timer.reset();

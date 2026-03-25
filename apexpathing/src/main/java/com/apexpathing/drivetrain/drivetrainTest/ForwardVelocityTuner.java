@@ -19,6 +19,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  *   4. Plug that value into your DriveConstants as MAX_TICKS_PER_SEC (forward).
  *
  * @author Sohum Arora 22985 Paraducks
+ * @author Simon Gidrewicz 31663 RSR Cuttlefish
  */
 
 @TeleOp(name = "Forward Vel Tuner", group = "ApexPathing Tuning")
@@ -27,6 +28,8 @@ public class ForwardVelocityTuner extends LinearOpMode {
 
     private Drivetrain drivetrain;
     public static double duration = 3;
+    private boolean running = false;
+
 
     @Override
     public void runOpMode() {
@@ -34,7 +37,9 @@ public class ForwardVelocityTuner extends LinearOpMode {
        //TODO initialize your drivetrain here
 
         telemetry.addLine("Forward Velocity Tuner Ready");
-        telemetry.addLine("Press A to start drive burst.");
+        telemetry.addLine("Press A to Start");
+        telemetry.addLine("This tuner will drive the robot forward at full power for a few seconds");
+        telemetry.addLine("Once the program has ran, take the peakTicksPerSec and plug it into DriveConstants as MAX_TICKS_PER_SEC (forward)");
         telemetry.update();
 
         waitForStart();
@@ -42,8 +47,10 @@ public class ForwardVelocityTuner extends LinearOpMode {
         double peakTicksPerSec = 0;
 
         while (opModeIsActive()) {
-
-            if (gamepad1.a) {
+            if (gamepad1.aWasPressed()) {
+                running = !running;
+            }
+            if (running) {
                 ElapsedTime timer = new ElapsedTime();
                 timer.reset();
 
@@ -51,18 +58,18 @@ public class ForwardVelocityTuner extends LinearOpMode {
 
                     drivetrain.drive(0, 1, 0);
 
-                    double maxVel = 0;
+                    double currentVelocity = 0;
                     for (DcMotorEx motor : drivetrain.getMotors()) {
                         double vel = Math.abs(motor.getVelocity());
-                        if (vel > maxVel) maxVel = vel;
+                        if (vel > currentVelocity) currentVelocity = vel;
                     }
-                    if (maxVel > peakTicksPerSec) {
-                        peakTicksPerSec = maxVel;
+                    if (currentVelocity > peakTicksPerSec) {
+                        peakTicksPerSec = currentVelocity;
                     }
 
                     telemetry.addData("Elapsed (s)", timer.seconds());
-                    telemetry.addData("Current Vel (ticks/s)", maxVel);
-                    telemetry.addData("Peak Vel (ticks/s)", peakTicksPerSec);
+                    telemetry.addData("Current Velocity (ticks/s)", currentVelocity);
+                    telemetry.addData("Peak Velocity (ticks/s)", peakTicksPerSec);
                     telemetry.update();
                 }
 
@@ -70,7 +77,7 @@ public class ForwardVelocityTuner extends LinearOpMode {
             }
 
             telemetry.addLine("Press A to run tuner again");
-            telemetry.addData("Peak fwd velocity (ticks/second)", peakTicksPerSec);
+            telemetry.addData("Peak Forward Velocity (ticks/second)", peakTicksPerSec);
             telemetry.update();
         }
     }
