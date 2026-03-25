@@ -51,18 +51,18 @@ public class ForwardVelocityTuner extends LinearOpMode {
 
                     drivetrain.drive(0, 1, 0);
 
-                    double maxVel = 0;
+                    double currentVelocity = 0;
                     for (DcMotorEx motor : drivetrain.getMotors()) {
                         double vel = Math.abs(motor.getVelocity());
-                        if (vel > maxVel) maxVel = vel;
+                        if (vel > currentVelocity) currentVelocity = vel;
                     }
-                    if (maxVel > peakTicksPerSec) {
-                        peakTicksPerSec = maxVel;
+                    if (currentVelocity > peakTicksPerSec) {
+                        peakTicksPerSec = currentVelocity;
                     }
 
                     telemetry.addData("Elapsed (s)", timer.seconds());
-                    telemetry.addData("Current Vel (ticks/s)", maxVel);
-                    telemetry.addData("Peak Vel (ticks/s)", peakTicksPerSec);
+                    telemetry.addData("Current Velocity (ticks/s)", currentVelocity);
+                    telemetry.addData("Peak Velocity (ticks/s)", peakTicksPerSec);
                     telemetry.update();
                 }
 
@@ -70,7 +70,7 @@ public class ForwardVelocityTuner extends LinearOpMode {
             }
 
             telemetry.addLine("Press A to run tuner again");
-            telemetry.addData("Peak fwd velocity (ticks/second)", peakTicksPerSec);
+            telemetry.addData("Peak Forward Velocity (ticks/second)", peakTicksPerSec);
             telemetry.update();
         }
     }

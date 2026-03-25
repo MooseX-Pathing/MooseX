@@ -32,8 +32,8 @@ public class LateralVelocityTuner extends LinearOpMode {
         //todo initialize drivetrain here
 
         telemetry.addLine("Lateral Velocity Tuner Ready");
-        telemetry.addLine("ONLY valid for Mecanum / Swerve.");
-        telemetry.addLine("Press A to start strafe burst.");
+        telemetry.addLine("ONLY valid for Mecanum / Swerve");
+        telemetry.addLine("Press A to start");
         telemetry.update();
 
         waitForStart();
@@ -41,8 +41,11 @@ public class LateralVelocityTuner extends LinearOpMode {
         double peakTicksPerSec = 0;
         double strafeDir = STRAFE_RIGHT ? 1.0 : -1.0;
 
-        while (opModeIsActive()) {
 
+        while (opModeIsActive()) {
+            if (gamepad1.aWasPressed()) {
+                running = !running;
+            }
             if (gamepad1.a) {
                 strafeDir = STRAFE_RIGHT ? 1.0 : -1.0;
                 ElapsedTime timer = new ElapsedTime();
