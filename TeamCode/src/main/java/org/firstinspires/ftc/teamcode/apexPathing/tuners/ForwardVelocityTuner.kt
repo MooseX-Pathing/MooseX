@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.apexPathing.Constants.localizer
  * @author Atharv Gurnani - 13085 Bionic Dutch
  */
 class ForwardVelocityTuner: OpMode() {
-    private val dist = 40;
+    private val dist = 40.0;
     private lateinit var drive : MecanumDrive;
     override fun init() {
         drive = MecanumDrive(hardwareMap, dtConstants, localizer)
@@ -17,7 +17,12 @@ class ForwardVelocityTuner: OpMode() {
     }
 
     override fun loop() {
-        drive.botCentricDrive(0.0, 1.0, 0.0)
+        if (localizer.currentPosition.x + localizer.currentPosition.y <= dist) {
+            drive.botCentricDrive(0.0, 1.0, 0.0)
+        }
+        else {
+            drive.botCentricDrive(0.0,0.0,0.0);
+        }
     }
 
 }
