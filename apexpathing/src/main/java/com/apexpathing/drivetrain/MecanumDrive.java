@@ -1,6 +1,7 @@
 package com.apexpathing.drivetrain;
 
 
+import com.apexpathing.localization.Localizer;
 import com.apexpathing.util.math.Vector;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -40,11 +41,12 @@ public class MecanumDrive extends Drivetrain {
     private boolean voltageCompensation;
     private double maxPowerScaling = 1.0;
 
-    // -------------------------------------------------------------------------
-    // Constructor
-    // -------------------------------------------------------------------------
+    private final Localizer localizer;
+
+    private DcMotorEx leftFront, leftRear, rightFront, rightRear;
 
     public MecanumDrive(HardwareMap hardwareMap,
+                        Localizer localizer,
                         Telemetry telemetry,
                         MecanumConstants mecanumConstants,
                         @NotNull String leftFrontMotorName,
@@ -52,7 +54,8 @@ public class MecanumDrive extends Drivetrain {
                         @NotNull String leftRearMotorName,
                         @NotNull String rightRearMotorName) {
         super(hardwareMap, telemetry, mecanumConstants.useBrakeMode,
-                leftFrontMotorName, rightFrontMotorName, leftRearMotorName, rightRearMotorName);
+                leftFrontMotorName, rightFrontMotorName, leftRearMotorName, rightRearMotorName,
+                localizer);
 
         this.constants = mecanumConstants;
         this.motors = Arrays.asList(leftFront, leftRear, rightFront, rightRear);
@@ -72,7 +75,6 @@ public class MecanumDrive extends Drivetrain {
             motor.setMotorType(type);
         }
 
-        // Build mecanum wheel vectors from the front-left vector in constants
         Vector fl = mecanumConstants.frontLeftVector.normalize();
         this.mecanumVectors = new Vector[]{
                 new Vector(fl.getMagnitude(), fl.getTheta()),                        // left front
@@ -83,6 +85,8 @@ public class MecanumDrive extends Drivetrain {
 
         setMotorsToFloat();
         breakFollowing();
+
+        this.localizer = localizer;
     }
 
     // -------------------------------------------------------------------------
@@ -99,6 +103,11 @@ public class MecanumDrive extends Drivetrain {
     @Override
     public void driveFieldCentric(double x, double y, double turn, double heading) {
         fieldCentricDrive(x, y, turn, heading);
+    }
+
+    @Override
+    public void initDriveTrain() {
+
     }
 
     // -------------------------------------------------------------------------

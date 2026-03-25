@@ -11,17 +11,19 @@ import com.apexpathing.util.math.Pose
 /**
  * GoBilda Pinpoint odometry localizer
  * @Author Sohum Arora 22985
+ * TODO: Add StartingPose logic
  */
 class PinpointLocalizer(
     private val hardwareMap: HardwareMap,
     private val deviceName: String,
     var xOffset: Double = 0.0,
-    var yOffset: Double = 0.0
+    var yOffset: Double = 0.0,
 ) : LocalizerBase() {
 
     private lateinit var pinpoint: GoBildaPinpointDriver
+    private lateinit var startPose : Pose;
 
-    fun init() {
+    fun init(startPose : Pose) {
         pinpoint = hardwareMap.get(GoBildaPinpointDriver::class.java, deviceName)
         pinpoint.setOffsets(xOffset, yOffset, DistanceUnit.INCH)
         pinpoint.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD)
@@ -30,6 +32,12 @@ class PinpointLocalizer(
             GoBildaPinpointDriver.EncoderDirection.FORWARD
         )
         pinpoint.resetPosAndIMU()
+
+        this.startPose = startPose.copy();
+    }
+
+    fun init() {
+        this.init(Pose())
     }
 
     override fun update() {
@@ -38,13 +46,14 @@ class PinpointLocalizer(
 
         lastPosition = currentPosition
         currentPosition = Pose(
-            pos.getX(DistanceUnit.INCH),
-            pos.getY(DistanceUnit.INCH),
-            pinpoint.getHeading(AngleUnit.RADIANS)
+            pos.getX(DistanceUnit.INCH) + startPose.x,
+            pos.getY(DistanceUnit.INCH) + startPose.y,
+            pinpoint.getHeading(AngleUnit.RADIANS) + startPose.heading
         )
 
         currentVelocity.x = (currentPosition.x - lastPosition.x)
         currentVelocity.y = (currentPosition.y - lastPosition.y)
+        currentVelocity.theta = (currentPosition.heading - lastPosition.heading)
     }
 
     override fun getPose(): Pose = currentPosition
