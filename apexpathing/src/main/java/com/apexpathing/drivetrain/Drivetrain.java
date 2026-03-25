@@ -1,5 +1,6 @@
 package com.apexpathing.drivetrain;
 
+import com.apexpathing.localization.Localizer;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -14,23 +15,32 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * abstract drivetrain base class
- * @author Sohum Arora
+ * Drivetrain base class extended by MecanumDrive, TankDrive and SwerveDrive
+ * @author Krish Joshi - 26192 Heatwaves
+ * @author Sohum Arora 22985
  */
-
 public abstract class Drivetrain {
     public DcMotorEx leftFront, leftRear, rightFront, rightRear;
     Telemetry telemetry;
     public Servo leftFrontServo, leftRearServo, rightFrontServo, rightRearServo;
 
+    public HardwareMap hardwareMap;
+    private Localizer localizer;
+
+    public Drivetrain() {
+        this.telemetry = null;
+    }
     public Drivetrain(HardwareMap hardwareMap,
                       Telemetry telemetry,
                       boolean useBrakeMode,
                       @NotNull String leftFrontName,
                       @NotNull String rightFrontName,
                       @NotNull String leftRearName,
-                      @NotNull String rightRearName) {
+                      @NotNull String rightRearName,
+                      Localizer localizer) {
+        this.hardwareMap = hardwareMap;
         this.telemetry = telemetry;
+        this.localizer = localizer;
 
         leftFront = hardwareMap.get(DcMotorEx.class, leftFrontName);
         leftRear = hardwareMap.get(DcMotorEx.class, leftRearName);
@@ -51,7 +61,6 @@ public abstract class Drivetrain {
             setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         }
     }
-
     public Drivetrain(HardwareMap hardwareMap,
                       Telemetry telemetry,
                       boolean useBrakeMode,
@@ -63,7 +72,7 @@ public abstract class Drivetrain {
                       String rightFrontServoName,
                       String leftRearServoName,
                       String rightRearServoName) {
-        this(hardwareMap, telemetry, useBrakeMode, leftFrontName, rightFrontName, leftRearName, rightRearName);
+        this(hardwareMap, telemetry, useBrakeMode, leftFrontName, rightFrontName, leftRearName, rightRearName, null);
 
         //Servos for swerve
         leftFrontServo = hardwareMap.get(Servo.class, leftFrontServoName);
@@ -71,7 +80,6 @@ public abstract class Drivetrain {
         leftRearServo = hardwareMap.get(Servo.class, leftRearServoName);
         rightRearServo = hardwareMap.get(Servo.class, rightRearServoName);
     }
-
     public abstract void drive(double x, double y, double turn);
 
     public abstract void driveFieldCentric(double x, double y, double turn, double heading);
@@ -86,6 +94,11 @@ public abstract class Drivetrain {
         rightFront.setMode(mode);
         rightRear.setMode(mode);
     }
+    public final void update() {
+        localizer.update();
+    }
+
+    public abstract void initDriveTrain();
 
     public void setZeroPowerBehavior(DcMotor.ZeroPowerBehavior behavior) {
         leftFront.setZeroPowerBehavior(behavior);

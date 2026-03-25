@@ -4,6 +4,9 @@ import com.apexpathing.drivetrain.MecanumConstants;
 import com.apexpathing.localization.PinpointLocalizer;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+/**
+ * @author Atharv Gurnani - 13085 Bionic Dutch
+ */
 public class Constants {
     public static PinpointLocalizer localizer = null;
     public static MecanumConstants dtConstants = null;

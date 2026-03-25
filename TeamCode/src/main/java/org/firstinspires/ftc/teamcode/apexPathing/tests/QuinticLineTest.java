@@ -23,7 +23,8 @@ public class QuinticLineTest extends LinearOpMode {
         MecanumConstants constants = new MecanumConstants();
         MecanumDrive drive = new MecanumDrive(
                 hardwareMap,
-                constants
+                constants,
+                localizer
         );
 
         // 3. Define Trajectory

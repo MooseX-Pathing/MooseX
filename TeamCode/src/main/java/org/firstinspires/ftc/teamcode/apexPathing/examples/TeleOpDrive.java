@@ -21,7 +21,8 @@ public class TeleOpDrive extends OpMode {
     public void init() {
         drive = new MecanumDrive(
                 hardwareMap,
-                dtConstants
+                dtConstants,
+                localizer
         );
 
         Constants.init();
