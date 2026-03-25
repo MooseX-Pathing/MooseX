@@ -105,6 +105,11 @@ public class MecanumDrive extends Drivetrain {
         fieldCentricDrive(x, y, turn, heading);
     }
 
+    @Override
+    public void initDriveTrain() {
+
+    }
+
     // -------------------------------------------------------------------------
     // Drive methods
     // -------------------------------------------------------------------------
